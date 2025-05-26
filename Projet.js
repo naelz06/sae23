@@ -1,59 +1,100 @@
-const codePostal = document.getElementById("codeP")
-const inputV = document.getElementById("inputCode")
+// Sélection des éléments
+const codePostalInput = document.getElementById("code-postal");
+const communeSelect = document.getElementById("communeSelect");
+const validationButton = document.getElementById("validationButton");
 
-codePostal.addEventListener('click', () => {
-    event.preventDefault();  // Empêche le rechargement de la page
+// Fonction pour effectuer la requête API des communes en utilisant le code postal
+async function fetchCommunesByCodePostal(codePostal) {
+  try {
+    const response = await fetch(
+      `https://geo.api.gouv.fr/communes?codePostal=${codePostal}`
+    );
+    const data = await response.json();
+    console.table(data);
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la requête API:", error);
+    throw error;
+  }
+}
 
-    const code = inputV.value
-    //alert(code)
-    fetch(`https://geo.api.gouv.fr/communes?codePostal=${code}`)
+// Fonction pour afficher les communes dans la liste déroulante
+function displayCommunes(data) {
+  communeSelect.innerHTML = "";
+  // S'il y a au moins une commune retournée dans data
+  if (data.length) {
+    data.forEach((commune) => {
+      const option = document.createElement("option");
+      option.value = commune.code;
+      option.textContent = commune.nom;
+      communeSelect.appendChild(option);
+    });
+    communeSelect.style.display = "block";
+    validationButton.style.display = "block";
+  }
+  else {
+    // Supprimer un message précédent s’il existe déjà
+    const existingMessage = document.getElementById("error-message");
+    if (!existingMessage) {
+      const message = document.createElement("p");
+      message.id = "error-message";
+      message.textContent = "Le code postal saisi n'est pas valide";
+      message.classList.add('errorMessage');
+      document.body.appendChild(message);
+    }
 
-    
-        .then(response => response.json())
-        .then(data => {
-            console.table(data)
-            return(data)
-        })
-})
+    // Masquer les éléments inutiles
+    communeSelect.style.display = "none";
+    validationButton.style.display = "none";
 
-/* event.preventDefault() : Ton code HTML et JavaScript est bien structuré pour démarrer une recherche de communes via le code postal. Cependant, il y a un problème courant ici : le comportement par défaut du bouton dans un formulaire HTML est de soumettre le formulaire, ce qui provoque un rafraîchissement de la page, interrompant le fonctionnement du JavaScript (fetch).
-Il faut empêcher le rechargement de la page lors du clic sur le bouton en ajoutant event.preventDefault() dans le gestionnaire d'événement.
+    // Recharger la page après 3 secondes
+    setTimeout(() => location.reload(), 3000);
+  }
+}
+// Fonction pour effectuer la requête API de météo en utilisant le code de la commune sélectionnée
+async function fetchMeteoByCommune(selectedCommune) {
+  try {
+    const response = await fetch(
+      `https://api.meteo-concept.com/api/forecast/daily/0?token=4bba169b3e3365061d39563419ab23e5016c0f838ba282498439c41a00ef1091&insee=${selectedCommune}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la requête API:", error);
+    throw error;
+  }
+}
 
+// Ajout de l'écouteur d'événement "input" sur le champ code postal
+codePostalInput.addEventListener("input", async () => {
+  const codePostal = codePostalInput.value;
+  communeSelect.style.display = "none";
+  validationButton.style.display = "none";
 
-/*
-fetch(url)
-.then(response => response.json())
-.then(data => {
-    let adviceElement = document.createElement('p');
+  if (/^\d{5}$/.test(codePostal)) {
+    try {
+      const data = await fetchCommunesByCodePostal(codePostal);
+      displayCommunes(data);
+    } catch (error) {
+      console.error(
+        "Une erreur est survenue lors de la recherche de la commune :",
+        error
+      );
+      throw error;
+    }
+  }
+});
 
-})
-*/
-
-
-/*
-
-DOM : ???
-defer: execution une foie la page charché
-
-fonction asynchrone : on connais pas reponse du serveur
-await : attendre la reponse
-
-console table : liste d'enregistrement de maniere tabulaire
-innerhtml : ecrit du html dans la balise
-
-
-commune.appendChild(optino) : ajoute option dans le select
-
-
-communeSelect.style.display = "block";
-validationButton.style.display = "block";
-
-=> pas vilsible de base, donc on utilise block 
-
-communeSelect.style.display = "block";
-validationButton.style.display = "block";
-
-=> masquer les deuc champs
-
-createCard(data): 
-*/
+// Ajout de l'écouteur d'événement "click" sur le bouton de validation
+validationButton.addEventListener("click", async () => {
+  const selectedCommune = communeSelect.value;
+  if (selectedCommune) { // si selectedCommune n'est pas vide
+    try {
+      const data = await fetchMeteoByCommune(selectedCommune);
+      createCard(data);
+    } catch (error) {
+      console.error("Erreur lors de la requête API meteoConcept:", error);
+      throw error;
+    }
+  }
+});
