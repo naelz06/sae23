@@ -53,17 +53,19 @@ function displayCommunes(data) {
 }
 // Fonction pour effectuer la requête API de météo en utilisant le code de la commune sélectionnée
 async function fetchMeteoByCommune(selectedCommune) {
-  try {
-    const response = await fetch(
-      `https://api.meteo-concept.com/api/forecast/daily/0?token=4bba169b3e3365061d39563419ab23e5016c0f838ba282498439c41a00ef1091&insee=${selectedCommune}`
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Erreur lors de la requête API:", error);
-    throw error;
+    try {
+      const response = await fetch(
+        `https://api.meteo-concept.com/api/forecast/daily/0?token=7459e816e4ae4b9642561b0d07d030139ea2966a921a61686314f167cfa2956b&insee=${selectedCommune}`
+      );
+      const data = await response.json();
+      console.log("Données météo reçues :", data);
+      return data;
+    } catch (error) {
+      console.error("Erreur lors de la requête API:", error);
+      throw error;
+    }
   }
-}
+  
 
 // Ajout de l'écouteur d'événement "input" sur le champ code postal
 codePostalInput.addEventListener("input", async () => {
@@ -98,3 +100,23 @@ validationButton.addEventListener("click", async () => {
     }
   }
 });
+
+function createCard(data) {
+    const meteo = data.forecast; // forecast est un objet, pas un tableau
+    const container = document.getElementById("meteoResultats");
+  
+    if (!meteo) {
+      container.innerHTML = "<p>Impossible de récupérer les données météo.</p>";
+      return;
+    }
+  
+    container.innerHTML = `
+      <h3>Météo pour aujourd’hui</h3>
+      <p>🌡 <strong>Température minimale :</strong> ${meteo.tmin} °C</p>
+      <p>🌡 <strong>Température maximale :</strong> ${meteo.tmax} °C</p>
+      <p>🌧 <strong>Probabilité de pluie :</strong> ${meteo.probarain} %</p>
+      <p>☀ <strong>Heures d’ensoleillement :</strong> ${meteo.sun_hours}</p>
+    `;
+  }
+  
+  
