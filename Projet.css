@@ -1,0 +1,35 @@
+header {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    color: rgb(29, 90, 204);
+    text-align: center;
+    width: 35%;
+    border-radius: 10%;
+    border : solid;
+    align-items: center;  /*centre elt dans le header*/
+    margin-bottom: 5%;
+    background-color: #ffffff; 
+
+}
+
+main {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    color: rgb(29, 90, 204);
+    text-align: center;
+    width: 35%;
+    border-radius: 10%;
+    border : solid;
+    border-color: rgb(25, 51, 199);
+}
+
+html {
+    height: 100%;
+    background-color: #3566e9;
+    background-image: linear-gradient(180deg, #3566e9 0%, #a0fbfd 100%);
+
+}
