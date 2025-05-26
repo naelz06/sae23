@@ -17,15 +17,25 @@
     <main>
       <section>
         <form>
-          <!-- ID changé ici pour correspondre au JS -->
-          <input type="text" id="code-postal" placeholder="Saisir un code postal" />
-
-          <!-- Select ajouté pour les communes -->
-          <select id="communeSelect" style="display: none;"></select>
-
-          <!-- Bouton pour valider la commune sélectionnée -->
-          <button type="button" id="validationButton" style="display: none;">Valider</button>
-        </form>
+            <input type="text" id="code-postal" placeholder="Saisir un code postal" />
+          
+            <label for="nbJoursSelect">Nombre de jours :</label>
+            <select id="nbJoursSelect">
+              <option value="1">1 jour</option>
+              <option value="2">2 jours</option>
+              <option value="3">3 jours</option>
+              <option value="4">4 jours</option>
+              <option value="5">5 jours</option>
+              <option value="6">6 jours</option>
+              <option value="7">7 jours</option>
+            </select>
+          
+            <select id="communeSelect" style="display: none;"></select>
+            <button type="button" id="validationButton" style="display: none;">Valider</button>
+          </form>
+          
+          <section id="meteoResultats"></section>
+          
 
       </section>
 

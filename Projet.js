@@ -1,27 +1,25 @@
-// Sélection des éléments
 const codePostalInput = document.getElementById("code-postal");
 const communeSelect = document.getElementById("communeSelect");
 const validationButton = document.getElementById("validationButton");
+const nbJoursSelect = document.getElementById("nbJoursSelect");
 
-// Fonction pour effectuer la requête API des communes en utilisant le code postal
+// Fonction pour récupérer les communes par code postal
 async function fetchCommunesByCodePostal(codePostal) {
   try {
     const response = await fetch(
       `https://geo.api.gouv.fr/communes?codePostal=${codePostal}`
     );
-    const data = await response.json();
-    console.table(data);
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error("Erreur lors de la requête API:", error);
+    console.error("Erreur API communes :", error);
     throw error;
   }
 }
 
-// Fonction pour afficher les communes dans la liste déroulante
+// Affiche les communes dans la liste
 function displayCommunes(data) {
   communeSelect.innerHTML = "";
-  // S'il y a au moins une commune retournée dans data
+
   if (data.length) {
     data.forEach((commune) => {
       const option = document.createElement("option");
@@ -29,45 +27,40 @@ function displayCommunes(data) {
       option.textContent = commune.nom;
       communeSelect.appendChild(option);
     });
+
     communeSelect.style.display = "block";
     validationButton.style.display = "block";
-  }
-  else {
-    // Supprimer un message précédent s’il existe déjà
-    const existingMessage = document.getElementById("error-message");
-    if (!existingMessage) {
-      const message = document.createElement("p");
-      message.id = "error-message";
-      message.textContent = "Le code postal saisi n'est pas valide";
-      message.classList.add('errorMessage');
-      document.body.appendChild(message);
+  } else {
+    const existing = document.getElementById("error-message");
+    if (!existing) {
+      const msg = document.createElement("p");
+      msg.id = "error-message";
+      msg.textContent = "Le code postal saisi n'est pas valide";
+      msg.classList.add("errorMessage");
+      document.body.appendChild(msg);
     }
 
-    // Masquer les éléments inutiles
     communeSelect.style.display = "none";
     validationButton.style.display = "none";
-
-    // Recharger la page après 3 secondes
     setTimeout(() => location.reload(), 3000);
   }
 }
-// Fonction pour effectuer la requête API de météo en utilisant le code de la commune sélectionnée
-async function fetchMeteoByCommune(selectedCommune) {
-    try {
-      const response = await fetch(
-        `https://api.meteo-concept.com/api/forecast/daily/0?token=7459e816e4ae4b9642561b0d07d030139ea2966a921a61686314f167cfa2956b&insee=${selectedCommune}`
-      );
-      const data = await response.json();
-      console.log("Données météo reçues :", data);
-      return data;
-    } catch (error) {
-      console.error("Erreur lors de la requête API:", error);
-      throw error;
-    }
-  }
-  
 
-// Ajout de l'écouteur d'événement "input" sur le champ code postal
+// Récupère la météo selon le code INSEE + nb de jours
+async function fetchMeteoByCommune(selectedCommune, nbJours) {
+  try {
+    const response = await fetch(
+      `https://api.meteo-concept.com/api/forecast/daily?token=7459e816e4ae4b9642561b0d07d030139ea2966a921a61686314f167cfa2956b&insee=${selectedCommune}`
+    );
+    const data = await response.json();
+    return data.forecast.slice(0, nbJours); // on limite ici aux X jours
+  } catch (error) {
+    console.error("Erreur API météo :", error);
+    throw error;
+  }
+}
+
+// Écouteur sur le champ code postal
 codePostalInput.addEventListener("input", async () => {
   const codePostal = codePostalInput.value;
   communeSelect.style.display = "none";
@@ -78,45 +71,48 @@ codePostalInput.addEventListener("input", async () => {
       const data = await fetchCommunesByCodePostal(codePostal);
       displayCommunes(data);
     } catch (error) {
-      console.error(
-        "Une erreur est survenue lors de la recherche de la commune :",
-        error
-      );
-      throw error;
+      console.error("Erreur recherche commune :", error);
     }
   }
 });
 
-// Ajout de l'écouteur d'événement "click" sur le bouton de validation
+// Validation de la commune
 validationButton.addEventListener("click", async () => {
   const selectedCommune = communeSelect.value;
-  if (selectedCommune) { // si selectedCommune n'est pas vide
+  const nbJours = parseInt(nbJoursSelect.value, 10);
+
+  if (selectedCommune) {
     try {
-      const data = await fetchMeteoByCommune(selectedCommune);
-      createCard(data);
+      const meteoData = await fetchMeteoByCommune(selectedCommune, nbJours);
+      createCard(meteoData);
     } catch (error) {
-      console.error("Erreur lors de la requête API meteoConcept:", error);
-      throw error;
+      console.error("Erreur météo :", error);
     }
   }
 });
 
-function createCard(data) {
-    const meteo = data.forecast; // forecast est un objet, pas un tableau
-    const container = document.getElementById("meteoResultats");
-  
-    if (!meteo) {
-      container.innerHTML = "<p>Impossible de récupérer les données météo.</p>";
-      return;
-    }
-  
-    container.innerHTML = `
-      <h3>Météo pour aujourd’hui</h3>
-      <p>🌡 <strong>Température minimale :</strong> ${meteo.tmin} °C</p>
-      <p>🌡 <strong>Température maximale :</strong> ${meteo.tmax} °C</p>
-      <p>🌧 <strong>Probabilité de pluie :</strong> ${meteo.probarain} %</p>
-      <p>☀ <strong>Heures d’ensoleillement :</strong> ${meteo.sun_hours}</p>
-    `;
+// Affichage des prévisions météo
+function createCard(forecasts) {
+  const container = document.getElementById("meteoResultats");
+  container.innerHTML = "<h3>Prévisions météo :</h3>";
+
+  if (!forecasts || forecasts.length === 0) {
+    container.innerHTML += "<p>Aucune donnée météo disponible.</p>";
+    return;
   }
-  
-  
+
+  forecasts.forEach((meteo, index) => {
+    const jourDiv = document.createElement("div");
+    jourDiv.classList.add("jour-meteo");
+
+    jourDiv.innerHTML = `
+      <h4>Jour ${index + 1}</h4>
+      <p>🌡 <strong>Temp. min :</strong> ${meteo.tmin} °C</p>
+      <p>🌡 <strong>Temp. max :</strong> ${meteo.tmax} °C</p>
+      <p>🌧 <strong>Pluie :</strong> ${meteo.probarain} %</p>
+      <p>☀ <strong>Ensoleillement :</strong> ${meteo.sun_hours} h</p>
+    `;
+
+    container.appendChild(jourDiv);
+  });
+}
