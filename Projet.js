@@ -113,6 +113,33 @@ function createCard(forecasts) {
       <p>☀ <strong>Ensoleillement :</strong> ${meteo.sun_hours} h</p>
     `;
 
+    // Infos supplémentaires selon les cases cochées
+    if (showLat.checked || showLon.checked) {
+      const latlon = meteo.latitude && meteo.longitude
+        ? { lat: meteo.latitude, lon: meteo.longitude }
+        : forecasts[0]; // fallback
+
+      if (showLat.checked) {
+        jourDiv.innerHTML += `<p>🧭 <strong>Latitude :</strong> ${latlon.lat || "?"}</p>`;
+      }
+      if (showLon.checked) {
+        jourDiv.innerHTML += `<p>🧭 <strong>Longitude :</strong> ${latlon.lon || "?"}</p>`;
+      }
+    }
+
+    if (showRain.checked) {
+      jourDiv.innerHTML += `<p>🌧 <strong>Cumul de pluie :</strong> ${meteo.rr10} mm</p>`;
+    }
+
+    if (showWind.checked) {
+      jourDiv.innerHTML += `<p>💨 <strong>Vent moyen :</strong> ${meteo.wind10m} km/h</p>`;
+    }
+
+    if (showWindDir.checked) {
+      jourDiv.innerHTML += `<p>🧭 <strong>Direction du vent :</strong> ${meteo.dirwind10m}°</p>`;
+    }
+
     container.appendChild(jourDiv);
   });
 }
+
