@@ -142,4 +142,18 @@ function createCard(forecasts) {
     container.appendChild(jourDiv);
   });
 }
+const toggleBtn = document.getElementById("DarkMode");
+
+toggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+
+  if (document.body.classList.contains("dark-mode")) {
+    toggleBtn.textContent = "☀️ Mode clair";
+  } else {
+    toggleBtn.textContent = "🌙 Mode sombre";
+  }
+});
+
+
+
 

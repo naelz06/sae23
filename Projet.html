@@ -12,65 +12,41 @@
     <header>
       <h1>INSTANT WEATHER</h1>
       <p>Choisir sa commune et consulter la météo associée</p>
+      <button id="DarkMode">🌙 Mode Sombre</button>
     </header>
 
     <main>
       <section>
         <form>
-            <input type="text" id="code-postal" placeholder="Saisir un code postal" />
-          
-            <label for="nbJoursSelect">Nombre de jours :</label>
-            <select id="nbJoursSelect">
-              <option value="1">1 jour</option>
-              <option value="2">2 jours</option>
-              <option value="3">3 jours</option>
-              <option value="4">4 jours</option>
-              <option value="5">5 jours</option>
-              <option value="6">6 jours</option>
-              <option value="7">7 jours</option>
-            </select>
-          
-            <select id="communeSelect" style="display: none;"></select>
-            <fieldset>
-              <legend>Informations supplémentaires</legend>
-              
-              <label>
-                <input type="checkbox" id="showLat" />
-                Latitude décimale de la commune
-              </label><br />
-            
-              <label>
-                <input type="checkbox" id="showLon" />
-                Longitude décimale de la commune
-              </label><br />
-            
-              <label>
-                <input type="checkbox" id="showRain" />
-                Cumul de pluie (mm)
-              </label><br />
-            
-              <label>
-                <input type="checkbox" id="showWind" />
-                Vent moyen à 10 m (km/h)
-              </label><br />
-            
-              <label>
-                <input type="checkbox" id="showWindDir" />
-                Direction du vent (°)
-              </label>
-            </fieldset>
-            
-            <button type="button" id="validationButton" style="display: none;">Valider</button>
-          </form>
-          
-          <section id="meteoResultats"></section>
-          
+          <input type="text" id="code-postal" placeholder="Saisir un code postal" />
 
+          <label for="nbJoursSelect">Nombre de jours :</label>
+          <select id="nbJoursSelect">
+            <option value="1">1 jour</option>
+            <option value="2">2 jours</option>
+            <option value="3">3 jours</option>
+            <option value="4">4 jours</option>
+            <option value="5">5 jours</option>
+            <option value="6">6 jours</option>
+            <option value="7">7 jours</option>
+          </select>
+
+          <select id="communeSelect" style="display: none;"></select>
+
+          <fieldset>
+            <legend>Informations supplémentaires</legend>
+            <label><input type="checkbox" id="showLat" /> Latitude décimale de la commune</label><br />
+            <label><input type="checkbox" id="showLon" /> Longitude décimale de la commune</label><br />
+            <label><input type="checkbox" id="showRain" /> Cumul de pluie (mm)</label><br />
+            <label><input type="checkbox" id="showWind" /> Vent moyen à 10 m (km/h)</label><br />
+            <label><input type="checkbox" id="showWindDir" /> Direction du vent (°)</label><br />
+          </fieldset>
+
+          <button type="button" id="validationButton" style="display: none;">Valider</button>
+        </form>
+
+        <section id="meteoResultats"></section>
       </section>
-
-      <!-- Zone d'affichage de la météo -->
-      <section id="meteoResultats"></section>
     </main>
   </body>
 </html>
-
