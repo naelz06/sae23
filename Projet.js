@@ -3,7 +3,6 @@ const communeSelect = document.getElementById("communeSelect");
 const validationButton = document.getElementById("validationButton");
 const nbJoursSelect = document.getElementById("nbJoursSelect");
 
-// Fonction pour récupérer les communes par code postal
 async function fetchCommunesByCodePostal(codePostal) {
   try {
     const response = await fetch(
@@ -16,7 +15,6 @@ async function fetchCommunesByCodePostal(codePostal) {
   }
 }
 
-// Affiche les communes dans la liste
 function displayCommunes(data) {
   communeSelect.innerHTML = "";
 
@@ -46,21 +44,19 @@ function displayCommunes(data) {
   }
 }
 
-// Récupère la météo selon le code INSEE + nb de jours
 async function fetchMeteoByCommune(selectedCommune, nbJours) {
   try {
     const response = await fetch(
       `https://api.meteo-concept.com/api/forecast/daily?token=7459e816e4ae4b9642561b0d07d030139ea2966a921a61686314f167cfa2956b&insee=${selectedCommune}`
     );
     const data = await response.json();
-    return data.forecast.slice(0, nbJours); // on limite ici aux X jours
+    return data.forecast.slice(0, nbJours);
   } catch (error) {
     console.error("Erreur API météo :", error);
     throw error;
   }
 }
 
-// Écouteur sur le champ code postal
 codePostalInput.addEventListener("input", async () => {
   const codePostal = codePostalInput.value;
   communeSelect.style.display = "none";
@@ -76,7 +72,6 @@ codePostalInput.addEventListener("input", async () => {
   }
 });
 
-// Validation de la commune
 validationButton.addEventListener("click", async () => {
   const selectedCommune = communeSelect.value;
   const nbJours = parseInt(nbJoursSelect.value, 10);
@@ -91,7 +86,6 @@ validationButton.addEventListener("click", async () => {
   }
 });
 
-// Affichage des prévisions météo
 function createCard(forecasts) {
   const container = document.getElementById("meteoResultats");
   container.innerHTML = "<h3>Prévisions météo :</h3>";
@@ -107,28 +101,27 @@ function createCard(forecasts) {
 
     jourDiv.innerHTML = `
       <h4>Jour ${index + 1}</h4>
-      <p>🌡 <strong>Temp. min :</strong> ${meteo.tmin} °C</p>
-      <p>🌡 <strong>Temp. max :</strong> ${meteo.tmax} °C</p>
-      <p>🌧 <strong>Pluie :</strong> ${meteo.probarain} %</p>
-      <p>☀ <strong>Ensoleillement :</strong> ${meteo.sun_hours} h</p>
+      <p>​❄️​ <strong>Temp. min :</strong> ${meteo.tmin} °C</p>
+      <p>🔥​ <strong>Temp. max :</strong> ${meteo.tmax} °C</p>
+      <p>​🌧️ <strong>Pluie :</strong> ${meteo.probarain} %</p>
+      <p>​☀️ <strong>Ensoleillement :</strong> ${meteo.sun_hours} h</p>
     `;
 
-    // Infos supplémentaires selon les cases cochées
     if (showLat.checked || showLon.checked) {
       const latlon = meteo.latitude && meteo.longitude
         ? { lat: meteo.latitude, lon: meteo.longitude }
-        : forecasts[0]; // fallback
+        : forecasts[0]; 
 
       if (showLat.checked) {
-        jourDiv.innerHTML += `<p>🧭 <strong>Latitude :</strong> ${latlon.lat || "?"}</p>`;
+        jourDiv.innerHTML += `<p>️🗺️ <strong>Latitude :</strong> ${latlon.lat || "?"}</p>`;
       }
       if (showLon.checked) {
-        jourDiv.innerHTML += `<p>🧭 <strong>Longitude :</strong> ${latlon.lon || "?"}</p>`;
+        jourDiv.innerHTML += `<p>️🗺️ <strong>Longitude :</strong> ${latlon.lon || "?"}</p>`;
       }
     }
 
     if (showRain.checked) {
-      jourDiv.innerHTML += `<p>🌧 <strong>Cumul de pluie :</strong> ${meteo.rr10} mm</p>`;
+      jourDiv.innerHTML += `<p>💧​ <strong>Cumul de pluie :</strong> ${meteo.rr10} mm</p>`;
     }
 
     if (showWind.checked) {

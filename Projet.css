@@ -1,4 +1,3 @@
-/* Couleurs principales */
 body {
     font-family: Arial, sans-serif;
     background-color: #fff8f0;
@@ -12,13 +11,13 @@ body {
     transition: background-color 0.4s, color 0.4s;
   }
   
-  /* Dark mode */
+ 
   body.dark-mode {
     background-color: #2e2a25;
     color: #f4eee7;
   }
   
-  /* Titre */
+
   header {
     text-align: center;
     margin-bottom: 2rem;
@@ -46,7 +45,7 @@ body {
     color: #d4c8b6;
   }
   
-  /* Conteneur principal */
+
   main {
     background-color: white;
     padding: 2rem;
@@ -62,7 +61,7 @@ body {
     box-shadow: 0 10px 20px rgba(166, 124, 82, 0.5);
   }
   
-  /* Formulaire */
+ 
   form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -105,7 +104,6 @@ body {
     color: #f4eee7;
   }
   
-  /* Bouton */
   button {
     grid-column: span 2;
     padding: 1rem;
@@ -131,7 +129,6 @@ body {
     background-color: #c07b55;
   }
   
-  /* Fieldset */
   fieldset {
     grid-column: span 2;
     border: 2px solid #c07b55;
@@ -168,7 +165,7 @@ body {
     cursor: pointer;
   }
   
-  /* Résultats météo */
+ 
   #meteoResultats {
     margin-top: 1rem;
   }
@@ -205,20 +202,49 @@ body {
     font-size: 1rem;
   }
   
-  /* Responsive */
-  @media (max-width: 600px) {
+@media (max-width: 768px) {
+    body {
+      padding: 1rem;
+      align-items: stretch;
+    }
+  
+    main {
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: none;
+    }
+  
+    header h1 {
+      font-size: 2rem;
+    }
+  
     form {
       grid-template-columns: 1fr;
     }
-    
-    input[type="text"],
-    select,
-    button {
-      grid-column: span 1;
+  
+    fieldset {
+      padding: 1rem;
+    }
+  
+    .jour-meteo {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left-width: 5px;
+    }
+  
+    .jour-meteo h4 {
+      font-size: 1.1rem;
+    }
+  
+    .jour-meteo p {
+      font-size: 0.95rem;
+    }
+  
+    #DarkMode {
+      width: 100%;
     }
   }
   
-  /* Bouton bascule dark mode */
   #DarkMode {
     margin-top: 1rem;
     padding: 0.8rem 1.5rem;
