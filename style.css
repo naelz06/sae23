@@ -1,0 +1,271 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
+    color: #3a3025;
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.4s, color 0.4s;
+  }
+  
+ 
+  body.dark-mode {
+    background-color: #2e2a25;
+    color: #f4eee7;
+  }
+  
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  header h1 {
+    color: #c07b55;
+    font-size: 3rem;
+    margin: 0 0 0.2rem 0;
+    transition: color 0.4s;
+  }
+  
+  body.dark-mode header h1 {
+    color: #a67c52;
+  }
+  
+  header p {
+    color: #9b5f3d;
+    font-style: italic;
+    margin: 0;
+    transition: color 0.4s;
+  }
+  
+  body.dark-mode header p {
+    color: #d4c8b6;
+  }
+  
+
+  main {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(192, 123, 85, 0.3);
+    max-width: 600px;
+    width: 100%;
+    transition: background-color 0.4s, box-shadow 0.4s;
+  }
+  
+  body.dark-mode main {
+    background-color: #3c3834;
+    box-shadow: 0 10px 20px rgba(166, 124, 82, 0.5);
+  }
+  
+ 
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  form label {
+    font-weight: bold;
+    color: #9b5f3d;
+    transition: color 0.4s;
+  }
+  
+  body.dark-mode form label {
+    color: #d4c8b6;
+  }
+  
+  input[type="text"],
+  select {
+    grid-column: span 2;
+    padding: 0.7rem 1rem;
+    border: 2px solid #c07b55;
+    border-radius: 15px;
+    font-size: 1rem;
+    background-color: #fff3e6;
+    transition: border-color 0.3s, background-color 0.4s, color 0.4s;
+  }
+  
+  input[type="text"]:focus,
+  select:focus {
+    border-color: #9b5f3d;
+    outline: none;
+    background-color: #ffe9cc;
+  }
+  
+  body.dark-mode input[type="text"],
+  body.dark-mode select {
+    background-color: #5a534d;
+    border-color: #a67c52;
+    color: #f4eee7;
+  }
+  
+  button {
+    grid-column: span 2;
+    padding: 1rem;
+    background-color: #c07b55;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #9b5f3d;
+  }
+  
+  body.dark-mode button {
+    background-color: #a67c52;
+  }
+  
+  body.dark-mode button:hover {
+    background-color: #c07b55;
+  }
+  
+  fieldset {
+    grid-column: span 2;
+    border: 2px solid #c07b55;
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    background-color: #fff3e6;
+    color: #9b5f3d;
+    transition: background-color 0.4s, border-color 0.4s, color 0.4s;
+  }
+  
+  body.dark-mode fieldset {
+    background-color: #4b433c;
+    border-color: #a67c52;
+    color: #d4c8b6;
+  }
+  
+  fieldset legend {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  fieldset label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0.7rem;
+  }
+  
+  fieldset input[type="checkbox"] {
+    margin-right: 0.8rem;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  
+ 
+  #meteoResultats {
+    margin-top: 1rem;
+  }
+  
+  .jour-meteo {
+    background-color: #fff3e6;
+    border-left: 8px solid #c07b55;
+    padding: 1.5rem 2rem;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(192, 123, 85, 0.3);
+    transition: background-color 0.4s, border-left-color 0.4s, color 0.4s, transform 0.3s;
+  }
+  
+  .jour-meteo:hover {
+    transform: translateY(-5px);
+  }
+  
+  body.dark-mode .jour-meteo {
+    background-color: #5a534d;
+    border-left-color: #a67c52;
+    color: #f4eee7;
+    box-shadow: 0 5px 15px rgba(166, 124, 82, 0.5);
+  }
+  
+  .jour-meteo h4 {
+    margin: 0 0 1rem 0;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+  
+  .jour-meteo p {
+    margin: 0.3rem 0;
+    font-size: 1rem;
+  }
+  
+@media (max-width: 768px) {
+    body {
+      padding: 1rem;
+      align-items: stretch;
+    }
+  
+    main {
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: none;
+    }
+  
+    header h1 {
+      font-size: 2rem;
+    }
+  
+    form {
+      grid-template-columns: 1fr;
+    }
+  
+    fieldset {
+      padding: 1rem;
+    }
+  
+    .jour-meteo {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left-width: 5px;
+    }
+  
+    .jour-meteo h4 {
+      font-size: 1.1rem;
+    }
+  
+    .jour-meteo p {
+      font-size: 0.95rem;
+    }
+  
+    #DarkMode {
+      width: 100%;
+    }
+  }
+  
+  #DarkMode {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #c07b55;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #DarkMode:hover {
+    background-color: #9b5f3d;
+  }
+  
+  body.dark-mode #DarkMode {
+    background-color: #a67c52;
+  }
+  
+  body.dark-mode #DarkMode:hover {
+    background-color: #c07b55;
+  }
+  
